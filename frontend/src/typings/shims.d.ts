@@ -42,6 +42,9 @@ declare module '@hotwired/turbo' {
   }
 
   export function start():void;
+
+  export function setProgressBarDelay(delay:number):void;
+
 }
 
 declare global {
