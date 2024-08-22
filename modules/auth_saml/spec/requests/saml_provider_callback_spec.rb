@@ -28,7 +28,6 @@
 
 require "spec_helper"
 require "rack/test"
-require_relative "../support/certificate_helper"
 
 RSpec.describe "SAML provider callback", with_ee: %i[sso_auth_providers] do
   include Rack::Test::Methods
