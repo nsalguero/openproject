@@ -1,13 +1,6 @@
 // Legacy code ported from app/assets/javascripts/application.js.erb
 // Do not add stuff here, but ideally remove into components whenever changes are necessary
 export function setupServerResponse() {
-  initMainMenuExpandStatus();
-  focusFirstErroneousField();
-  activateFlashNotice();
-  activateFlashError();
-  autoHideFlashMessage();
-  flashCloseHandler();
-
   jQuery(document).ajaxComplete(activateFlashNotice);
   jQuery(document).ajaxComplete(activateFlashError);
 
@@ -100,7 +93,7 @@ function flashCloseHandler() {
   });
 }
 
-function autoHideFlashMessage() {
+export function autoHideFlashMessage() {
   setTimeout(() => {
     jQuery('.op-toast.autohide-toaster').remove();
   }, 5000);
@@ -121,7 +114,7 @@ function addClickEventToAllErrorMessages() {
   });
 }
 
-function initMainMenuExpandStatus() {
+export function initMainMenuExpandStatus() {
   const wrapper = jQuery('#wrapper');
   const upToggle = jQuery('ul.menu_root.closed li.open a.arrow-left-to-project');
 
@@ -139,15 +132,15 @@ function activateFlash(selector:any) {
   });
 }
 
-function activateFlashNotice() {
+export function activateFlashNotice() {
   activateFlash('.op-toast[role="alert"]');
 }
 
-function activateFlashError() {
+export function activateFlashError() {
   activateFlash('.errorExplanation[role="alert"]');
 }
 
-function focusFirstErroneousField() {
+export function focusFirstErroneousField() {
   const firstErrorSpan = jQuery('span.errorSpan').first();
   const erroneousInput = firstErrorSpan.find('*').filter(':input');
 

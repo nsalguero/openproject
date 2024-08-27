@@ -4,6 +4,7 @@ import TurboPower from 'turbo_power';
 import { registerDialogStreamAction } from './dialog-stream-action';
 import { addTurboEventListeners } from './turbo-event-listeners';
 import { registerFlashStreamAction } from './flash-stream-action';
+import { addTurboGlobalListeners } from './turbo-global-listeners';
 
 Turbo.session.drive = true;
 Turbo.setProgressBarDelay(100);
@@ -13,6 +14,7 @@ Turbo.start();
 
 // Register our own actions
 addTurboEventListeners();
+addTurboGlobalListeners();
 registerDialogStreamAction();
 registerFlashStreamAction();
 
