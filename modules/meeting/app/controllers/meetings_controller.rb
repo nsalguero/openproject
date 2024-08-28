@@ -124,7 +124,7 @@ class MeetingsController < ApplicationController
       .call(save: false)
 
     @meeting = call.result
-    render action: "new", project_id: @project, locals: { copy_from: }
+    render action: :new, status: :unprocessable_entity, project_id: @project, locals: { copy_from: }
   end
 
   def destroy
@@ -169,7 +169,7 @@ class MeetingsController < ApplicationController
       redirect_to action: "show", id: @meeting
     else
       @meeting = call.result
-      render action: "edit"
+      render action: :edit, status: :unprocessable_entity
     end
   end
 

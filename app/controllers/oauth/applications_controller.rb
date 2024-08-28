@@ -57,7 +57,7 @@ module OAuth
         flash[:_application_secret] = call.result.plaintext_secret
         redirect_to action: :show, id: call.result.id
       else
-        render action: :new
+        render action: :new, status: :unprocessable_entity
       end
     end
 
@@ -70,7 +70,7 @@ module OAuth
         redirect_to action: :index
       else
         flash[:error] = call.errors.full_messages.join('\n')
-        render action: :edit
+        render action: :edit, status: :unprocessable_entity
       end
     end
 
