@@ -79,6 +79,28 @@ module Accounts::Registration
     end
   end
 
+  def register_via_omniauth(session, user_attributes)
+    handle_omniauth_authentication(session[:auth_source_registration], user_params: user_attributes)
+  end
+
+  def handle_omniauth_authentication(auth_hash, user_params: nil) # rubocop:disable Metrics/AbcSize
+    call = ::Authentication::OmniauthService
+      .new(strategy: request.env["omniauth.strategy"], auth_hash:, controller: self)
+      .call(user_params)
+
+    if call.success?
+      session[:omniauth_provider] = auth_hash[:provider]
+      flash[:notice] = call.message if call.message.present?
+      login_user_if_active(call.result, just_registered: call.result.just_created?)
+    elsif call.includes_error?(:base, :failed_to_activate)
+      redirect_omniauth_register_modal(call.result, auth_hash)
+    else
+      error = call.message
+      Rails.logger.error "Authorization request failed: #{error}"
+      show_error error
+    end
+  end
+
   def respond_for_registered_user(user)
     call = ::Users::RegisterUserService.new(user).call
 
@@ -114,6 +136,11 @@ module Accounts::Registration
 
   def pending_omniauth_registration?
     Hash(session[:auth_source_registration])[:omniauth]
+  end
+
+  def show_error(error)
+    flash[:error] = error
+    redirect_to signin_path
   end
 
   # Log an attempt to log in to an account in "registered" state and show a flash message.
